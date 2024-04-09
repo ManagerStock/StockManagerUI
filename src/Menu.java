@@ -75,7 +75,7 @@ public class Menu extends JFrame implements ActionListener {
 
         // Add card panel to frame
         add(cardPanel);
-
+        // Add card panel to frame
         // Initially show the article panel
         cardLayout.show(cardPanel, "ArticlePanel");
     }

@@ -10,17 +10,12 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
-public class ArticleTable extends JFrame {
+public class ArticleTable extends JPanel {
     private JTable table;
     private DefaultTableModel model;
 
     public ArticleTable() {
-        setTitle("Article Table");
-        setSize(600, 400);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-        // Create table model with columns
+        // Initialize table model and table as before
         model = new DefaultTableModel();
         model.addColumn("ID");
         model.addColumn("Name");
@@ -28,18 +23,22 @@ public class ArticleTable extends JFrame {
         model.addColumn("Price");
         model.addColumn("Brand");
 
-        // Create table with model
         table = new JTable(model);
-
-        // Create scroll pane and add table to it
         JScrollPane scrollPane = new JScrollPane(table);
         add(scrollPane, BorderLayout.CENTER);
 
-        // Fetch and display articles
+        // Initial fetch to populate table
         fetchArticles();
     }
 
+    public void refreshTableData() {
+        model.setRowCount(0); // Clear existing data
+        fetchArticles(); // Fetch and repopulate data
+    }
+
     private void fetchArticles() {
+
+        // Implementation as before to fetch and populate table data
         try {
             // URL of your backend endpoint to fetch articles
             URL url = new URL("http://localhost:2018/api/v1/article/all");
@@ -81,11 +80,4 @@ public class ArticleTable extends JFrame {
             JOptionPane.showMessageDialog(this, "Failed to fetch articles", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
-
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            ArticleTable articleTable = new ArticleTable();
-            articleTable.setVisible(true);
-        });
     }
-}
