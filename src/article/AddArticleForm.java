@@ -9,10 +9,13 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import model.Article;
 
+
 public class AddArticleForm extends JPanel implements ActionListener {
+    private JTextField categoryIdField = new JTextField(20);
     private JTextField nameField = new JTextField(20);
     private JTextField descriptionField = new JTextField(20);
     private JTextField priceField = new JTextField(20);
@@ -23,7 +26,7 @@ public class AddArticleForm extends JPanel implements ActionListener {
         this.articleTable = articleTable;
         setLayout(new GridLayout(5, 2, 10, 10));
         setBackground(new Color(245, 245, 245)); // Light grey
-
+        addField("Category ID :",  categoryIdField);
         addField("Name:", nameField);
         addField("Description:", descriptionField);
         addField("Price:", priceField);
@@ -68,8 +71,8 @@ public class AddArticleForm extends JPanel implements ActionListener {
 
     private boolean sendPostRequest(String articleJson) {
         try {
-            String apiUrl = "http://localhost:2018/api/v1/article/add";
-            URL url = new URL(apiUrl);
+            Long categoryId = Long.parseLong(categoryIdField.getText());
+            URL url = new URL("http://localhost:2018/api/v1/article/add/" + categoryId);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("POST");
             connection.setRequestProperty("Content-Type", "application/json");
@@ -92,3 +95,5 @@ public class AddArticleForm extends JPanel implements ActionListener {
         return false;
     }
 }
+
+

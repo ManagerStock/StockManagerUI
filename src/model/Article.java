@@ -5,6 +5,9 @@ public class Article {
     private String description;
     private double price;
 
+
+
+
     public String getName() {
         return name;
     }
@@ -41,6 +44,7 @@ public class Article {
 
     // Constructor
     public Article(String name, String description, double price, String brand) {
+
         this.name = name;
         this.description = description;
         this.price = price;
