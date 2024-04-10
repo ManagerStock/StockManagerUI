@@ -14,6 +14,7 @@ public class ArticlePanel extends JPanel implements ActionListener {
     private CardLayout contentLayout;
     private ArticleTable articleTable;
     private AddArticleForm addArticleForm;
+    private DeleteArticle deleteArticle ;
 
     public ArticlePanel() {
         setLayout(new BorderLayout());
@@ -26,12 +27,14 @@ public class ArticlePanel extends JPanel implements ActionListener {
         // Pass a reference to ArticleTable into AddArticleForm for refresh
         articleTable = new ArticleTable();
         addArticleForm = new AddArticleForm(articleTable);
+        deleteArticle = new DeleteArticle(articleTable);
 
         contentPanel.add(articleTable, "ArticleTable");
         contentPanel.add(addArticleForm, "ArticleForm");
+        contentPanel.add(deleteArticle, "DeleteArticle");
 
         add(contentPanel, BorderLayout.CENTER);
-        contentLayout.show(contentPanel, "ArticleTable");
+        //contentLayout.show(contentPanel, "ArticleTable");
     }
 
     private void initializeButtonPanel() {
@@ -63,6 +66,7 @@ public class ArticlePanel extends JPanel implements ActionListener {
             // Handle Update Article
         } else if ("Delete Article".equals(command)) {
             // Handle Delete Article
+            contentLayout.show(contentPanel, "DeleteArticle");
         } else if ("Add Article To Category".equals(command)) {
             contentLayout.show(contentPanel, "ArticleTable");
             // Handle Add Article To Category

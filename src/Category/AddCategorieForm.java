@@ -1,4 +1,4 @@
-package article;
+package Category;
 
 import javax.swing.*;
 import java.awt.*;
@@ -11,25 +11,22 @@ import java.net.URL;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import model.Article;
+import model.Category;
 
-public class AddArticleForm extends JPanel implements ActionListener {
+public class AddCategorieForm extends JPanel implements ActionListener {
     private JTextField nameField = new JTextField(20);
     private JTextField descriptionField = new JTextField(20);
-    private JTextField priceField = new JTextField(20);
-    private JTextField brandField = new JTextField(20);
-    private ArticleTable articleTable;
+    private CategoryTable categoryTable;
 
-    public AddArticleForm(ArticleTable articleTable) {
-        this.articleTable = articleTable;
+    public AddCategorieForm(CategoryTable categoryTable) {
+        this.categoryTable = categoryTable;
         setLayout(new GridLayout(5, 2, 10, 10));
         setBackground(new Color(245, 245, 245)); // Light grey
 
         addField("Name:", nameField);
         addField("Description:", descriptionField);
-        addField("Price:", priceField);
-        addField("Brand:", brandField);
 
-        JButton addButton = new JButton("Add Article");
+        JButton addButton = new JButton("Add Category");
         addButton.setBackground(new Color(40, 167, 69)); // Green
         addButton.setForeground(Color.WHITE);
         addButton.addActionListener(this);
@@ -46,29 +43,27 @@ public class AddArticleForm extends JPanel implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if ("Add Article".equals(e.getActionCommand())) {
+        if ("Add Category".equals(e.getActionCommand())) {
             try {
-                Article article = new Article(
+               Category category = new Category(
                         nameField.getText(),
-                        descriptionField.getText(),
-                        Double.parseDouble(priceField.getText()),
-                        brandField.getText()
+                        descriptionField.getText()
                 );
                 ObjectMapper objectMapper = new ObjectMapper();
-                String articleJson = objectMapper.writeValueAsString(article);
-                if (sendPostRequest(articleJson)) {
-                    JOptionPane.showMessageDialog(this, "Article added successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
-                    articleTable.refreshTableData();
+                String categoryJson = objectMapper.writeValueAsString(category);
+                if (sendPostRequest(categoryJson)) {
+                    JOptionPane.showMessageDialog(this, "Category added successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
+                    categoryTable.refreshTableData();
                 }
             } catch (NumberFormatException | JsonProcessingException ex) {
-                JOptionPane.showMessageDialog(this, "Error adding article. Please check your input.", "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Error adding category. Please check your input.", "Error", JOptionPane.ERROR_MESSAGE);
             }
         }
     }
 
-    private boolean sendPostRequest(String articleJson) {
+    private boolean sendPostRequest(String categoryJson) {
         try {
-            String apiUrl = "http://localhost:2018/api/v1/article/add";
+            String apiUrl = "http://localhost:2018/api/v1/category/add";
             URL url = new URL(apiUrl);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("POST");
@@ -76,7 +71,7 @@ public class AddArticleForm extends JPanel implements ActionListener {
             connection.setDoOutput(true);
 
             try (OutputStream os = connection.getOutputStream()) {
-                byte[] input = articleJson.getBytes("utf-8");
+                byte[] input = categoryJson.getBytes("utf-8");
                 os.write(input, 0, input.length);
             }
 
@@ -84,7 +79,7 @@ public class AddArticleForm extends JPanel implements ActionListener {
             if (responseCode == HttpURLConnection.HTTP_CREATED) {
                 return true;
             } else {
-                JOptionPane.showMessageDialog(this, "Failed to add article", "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Failed to add category", "Error", JOptionPane.ERROR_MESSAGE);
             }
         } catch (IOException ex) {
             JOptionPane.showMessageDialog(this, "Failed to send POST request", "Error", JOptionPane.ERROR_MESSAGE);

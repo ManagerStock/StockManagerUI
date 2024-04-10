@@ -1,5 +1,4 @@
-package article;
-
+package Category;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
@@ -10,28 +9,28 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-public class ArticleTable extends JPanel {
+public class CategoryTable extends JPanel {
     private JTable table;
     private DefaultTableModel model;
 
-    public ArticleTable() {
-        model = new DefaultTableModel(new Object[]{"ID", "Name", "Description", "Price", "Brand"}, 0);
+    public CategoryTable() {
+        model = new DefaultTableModel(new Object[]{"ID", "Name", "Description"}, 0);
         table = new JTable(model);
         table.setFillsViewportHeight(true);
         JScrollPane scrollPane = new JScrollPane(table);
         setLayout(new BorderLayout());
         add(scrollPane, BorderLayout.CENTER);
-        fetchArticles();
+        fetchCategories();
     }
 
     public void refreshTableData() {
         model.setRowCount(0); // Clear table
-        fetchArticles(); // Fetch updated data
+        fetchCategories(); // Fetch updated data
     }
 
-    private void fetchArticles() {
+    private void fetchCategories() {
         try {
-            URL url = new URL("http://localhost:2018/api/v1/article/all");
+            URL url = new URL("http://localhost:2018/api/v1/category/all");
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
             BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
@@ -47,14 +46,12 @@ public class ArticleTable extends JPanel {
                     model.addRow(new Object[]{
                             objNode.get("id").asLong(),
                             objNode.get("name").asText(),
-                            objNode.get("description").asText(),
-                            objNode.get("price").asDouble(),
-                            objNode.get("brand").asText()
+                            objNode.get("description").asText()
                     });
                 }
             }
         } catch (IOException e) {
-            JOptionPane.showMessageDialog(this, "Failed to fetch articles", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Failed to fetch categories", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 }
