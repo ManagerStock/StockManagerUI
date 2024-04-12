@@ -33,13 +33,15 @@ public class UserPanel extends JPanel implements ActionListener {
         String command = e.getActionCommand();
         switch (command) {
             case "Add User":
-                // Handle Add Article button click
+                AddUserForm addUserForm = new AddUserForm();
+                addUserForm.setVisible(true);
                 break;
             case "Update User":
                 // Handle Update Article button click
                 break;
             case "Delete User":
-                // Handle Delete Article button click
+                DeleteUser deleteUserForm = new DeleteUser();
+                deleteUserForm.setVisible(true);
                 break;
 
             default:

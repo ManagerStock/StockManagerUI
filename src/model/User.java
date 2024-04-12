@@ -1,14 +1,12 @@
 package model;
 
-import java.util.Date;
-
 public class User {
     private String firstName;
     private String lastName;
     private String email;
     private String address;
     private String phoneNumber;
-    private Date dateNaissance;
+    private String dateNaissance;
 
     public String getFirstName() {
         return firstName;
@@ -50,15 +48,15 @@ public class User {
         this.phoneNumber = phoneNumber;
     }
 
-    public Date getDateNaissance() {
+    public String getDateNaissance() {
         return dateNaissance;
     }
 
-    public void setDateNaissance(Date dateNaissance) {
+    public void setDateNaissance(String dateNaissance) {
         this.dateNaissance = dateNaissance;
     }
 
-    public User(String firstName, String lastName, String email, String address, String phoneNumber, Date dateNaissance) {
+    public User(String firstName, String lastName, String email, String address, String phoneNumber, String dateNaissance) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
