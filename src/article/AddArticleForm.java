@@ -9,10 +9,8 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import model.Article;
-
 
 public class AddArticleForm extends JPanel implements ActionListener {
     private JTextField categoryIdField = new JTextField(20);
@@ -24,27 +22,50 @@ public class AddArticleForm extends JPanel implements ActionListener {
 
     public AddArticleForm(ArticleTable articleTable) {
         this.articleTable = articleTable;
-        setLayout(new GridLayout(5, 2, 10, 10));
+        SpringLayout layout = new SpringLayout();
+        setLayout(layout);
         setBackground(new Color(245, 245, 245)); // Light grey
-        addField("Category ID :",  categoryIdField);
-        addField("Name:", nameField);
-        addField("Description:", descriptionField);
-        addField("Price:", priceField);
-        addField("Brand:", brandField);
+
+        addField("Category ID :",  categoryIdField, null, layout);
+        addField("Name:", nameField, categoryIdField, layout);
+        addField("Description:", descriptionField, nameField, layout);
+        addField("Price:", priceField, descriptionField, layout);
+        addField("Brand:", brandField, priceField, layout);
 
         JButton addButton = new JButton("Add Article");
         addButton.setBackground(new Color(40, 167, 69)); // Green
         addButton.setForeground(Color.WHITE);
         addButton.addActionListener(this);
-        add(new JLabel("")); // Placeholder for grid alignment
         add(addButton);
+
+        // Set constraints to center the "Add Article" button horizontally and vertically within the form
+        layout.putConstraint(SpringLayout.HORIZONTAL_CENTER, addButton, 0, SpringLayout.HORIZONTAL_CENTER, this);
+        layout.putConstraint(SpringLayout.VERTICAL_CENTER, addButton, 0, SpringLayout.VERTICAL_CENTER, this);
+
+        // Set preferred size for text fields
+        categoryIdField.setPreferredSize(new Dimension(120, 20));
+        nameField.setPreferredSize(new Dimension(120, 20));
+        descriptionField.setPreferredSize(new Dimension(120, 20));
+        priceField.setPreferredSize(new Dimension(120, 20));
+        brandField.setPreferredSize(new Dimension(120, 20));
     }
 
-    private void addField(String labelText, JTextField textField) {
+    private void addField(String labelText, JTextField textField, JComponent prevComponent, SpringLayout layout) {
         JLabel label = new JLabel(labelText);
         label.setForeground(new Color(33, 37, 41)); // Dark grey
         add(label);
+
+        if (prevComponent == null) {
+            layout.putConstraint(SpringLayout.NORTH, label, 5, SpringLayout.NORTH, this);
+        } else {
+            layout.putConstraint(SpringLayout.NORTH, label, 10, SpringLayout.SOUTH, prevComponent);
+        }
+
         add(textField);
+
+        layout.putConstraint(SpringLayout.WEST, label, 5, SpringLayout.WEST, this);
+        layout.putConstraint(SpringLayout.NORTH, textField, 5, SpringLayout.NORTH, label);
+        layout.putConstraint(SpringLayout.WEST, textField, 30, SpringLayout.EAST, label); // Added margin here
     }
 
     @Override
@@ -95,5 +116,3 @@ public class AddArticleForm extends JPanel implements ActionListener {
         return false;
     }
 }
-
-
