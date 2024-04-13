@@ -55,6 +55,7 @@ public class DeleteUser extends JFrame {
             if (responseCode == HttpURLConnection.HTTP_NO_CONTENT) {
                 JOptionPane.showMessageDialog(this, "User deleted successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
                 userIdField.setText(""); // Clear the text field after successful deletion
+                dispose();
             } else {
                 JOptionPane.showMessageDialog(this, "Failed to delete user", "Error", JOptionPane.ERROR_MESSAGE);
             }

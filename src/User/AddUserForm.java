@@ -102,6 +102,7 @@ public class AddUserForm extends JFrame {
                 addressField.setText("");
                 phoneNumberField.setText("");
                 dateOfBirthField.setText("");
+                dispose();
             }
         } catch (JsonProcessingException ex) {
             JOptionPane.showMessageDialog(this, "Error processing user data.", "Error", JOptionPane.ERROR_MESSAGE);
