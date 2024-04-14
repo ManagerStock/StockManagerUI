@@ -14,8 +14,10 @@ import model.User;
 
 public class AddUserForm extends JFrame {
     private JTextField firstNameField, lastNameField, emailField, addressField, phoneNumberField, dateOfBirthField;
+    private UserTable userTable; // Reference to the UserTable panel
 
-    public AddUserForm() {
+    public AddUserForm(UserTable userTable) {
+        this.userTable = userTable; // Set the reference to the UserTable panel
         setTitle("Add User");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(400, 300);
@@ -102,6 +104,8 @@ public class AddUserForm extends JFrame {
                 addressField.setText("");
                 phoneNumberField.setText("");
                 dateOfBirthField.setText("");
+                // Refresh the user table
+                userTable.refreshTableData();
                 dispose();
             }
         } catch (JsonProcessingException ex) {

@@ -12,7 +12,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import model.Article;
 
-public class AddArticleForm extends JPanel implements ActionListener {
+public class AddArticleForm extends JFrame implements ActionListener {
     private JTextField categoryIdField = new JTextField(20);
     private JTextField nameField = new JTextField(20);
     private JTextField descriptionField = new JTextField(20);
@@ -22,50 +22,47 @@ public class AddArticleForm extends JPanel implements ActionListener {
 
     public AddArticleForm(ArticleTable articleTable) {
         this.articleTable = articleTable;
-        SpringLayout layout = new SpringLayout();
-        setLayout(layout);
-        setBackground(new Color(245, 245, 245)); // Light grey
+        setTitle("Add Article");
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setSize(400, 300);
+        setLocationRelativeTo(null);
 
-        addField("Category ID :",  categoryIdField, null, layout);
-        addField("Name:", nameField, categoryIdField, layout);
-        addField("Description:", descriptionField, nameField, layout);
-        addField("Price:", priceField, descriptionField, layout);
-        addField("Brand:", brandField, priceField, layout);
+        // Create labels and fields
+        JLabel categoryIdLabel = new JLabel("Category ID:");
+        JLabel nameLabel = new JLabel("Name:");
+        JLabel descriptionLabel = new JLabel("Description:");
+        JLabel priceLabel = new JLabel("Price:");
+        JLabel brandLabel = new JLabel("Brand:");
 
-        JButton addButton = new JButton("Add Article");
-        addButton.setBackground(new Color(40, 167, 69)); // Green
-        addButton.setForeground(Color.WHITE);
-        addButton.addActionListener(this);
-        add(addButton);
+        // Create submit button
+        JButton submitButton = new JButton("Add Article");
+        submitButton.addActionListener(this);
 
-        // Set constraints to center the "Add Article" button horizontally and vertically within the form
-        layout.putConstraint(SpringLayout.HORIZONTAL_CENTER, addButton, 0, SpringLayout.HORIZONTAL_CENTER, this);
-        layout.putConstraint(SpringLayout.VERTICAL_CENTER, addButton, 0, SpringLayout.VERTICAL_CENTER, this);
+        // Create panel and set layout
+        JPanel panel = new JPanel(new GridLayout(6, 2, 10, 10));
+        panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10)); // Add margin
 
-        // Set preferred size for text fields
-        categoryIdField.setPreferredSize(new Dimension(120, 20));
-        nameField.setPreferredSize(new Dimension(120, 20));
-        descriptionField.setPreferredSize(new Dimension(120, 20));
-        priceField.setPreferredSize(new Dimension(120, 20));
-        brandField.setPreferredSize(new Dimension(120, 20));
-    }
+        // Add components to the panel
+        panel.add(categoryIdLabel);
+        panel.add(categoryIdField);
 
-    private void addField(String labelText, JTextField textField, JComponent prevComponent, SpringLayout layout) {
-        JLabel label = new JLabel(labelText);
-        label.setForeground(new Color(33, 37, 41)); // Dark grey
-        add(label);
+        panel.add(nameLabel);
+        panel.add(nameField);
 
-        if (prevComponent == null) {
-            layout.putConstraint(SpringLayout.NORTH, label, 5, SpringLayout.NORTH, this);
-        } else {
-            layout.putConstraint(SpringLayout.NORTH, label, 10, SpringLayout.SOUTH, prevComponent);
-        }
+        panel.add(descriptionLabel);
+        panel.add(descriptionField);
 
-        add(textField);
+        panel.add(priceLabel);
+        panel.add(priceField);
 
-        layout.putConstraint(SpringLayout.WEST, label, 5, SpringLayout.WEST, this);
-        layout.putConstraint(SpringLayout.NORTH, textField, 5, SpringLayout.NORTH, label);
-        layout.putConstraint(SpringLayout.WEST, textField, 30, SpringLayout.EAST, label); // Added margin here
+        panel.add(brandLabel);
+        panel.add(brandField);
+
+        // Add submit button to the panel
+        panel.add(submitButton);
+
+        // Add panel to the frame
+        add(panel, BorderLayout.CENTER);
     }
 
     @Override
@@ -83,6 +80,7 @@ public class AddArticleForm extends JPanel implements ActionListener {
                 if (sendPostRequest(articleJson)) {
                     JOptionPane.showMessageDialog(this, "Article added successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
                     articleTable.refreshTableData();
+                    dispose(); // Close the form after adding article
                 }
             } catch (NumberFormatException | JsonProcessingException ex) {
                 JOptionPane.showMessageDialog(this, "Error adding article. Please check your input.", "Error", JOptionPane.ERROR_MESSAGE);

@@ -13,7 +13,7 @@ public class CategoryPanel extends JPanel implements ActionListener {
     private JButton addCategoryButton;
     private JButton updateCategoryButton;
     private JButton deleteCategoryButton;
-    private JButton addArticleToCategoryButton;
+    private JButton allCategories;
     private JPanel contentPanel;
     private CardLayout contentLayout;
     private CategoryTable categoryTable;
@@ -31,7 +31,7 @@ public class CategoryPanel extends JPanel implements ActionListener {
         // Pass a reference to ArticleTable into AddArticleForm for refresh
         categoryTable = new CategoryTable();
         addCategorieForm = new AddCategorieForm(categoryTable);
-        deleteCategorie = new DeleteCategorie(categoryTable);
+        deleteCategorie = new DeleteCategorie();
 
         contentPanel.add(categoryTable, "CategoryTable");
         contentPanel.add(addCategorieForm, "CategoryForm");
@@ -45,17 +45,17 @@ public class CategoryPanel extends JPanel implements ActionListener {
         addCategoryButton = new JButton("Add Category");
         updateCategoryButton = new JButton("Update Category");
         deleteCategoryButton = new JButton("Delete Category");
-        addArticleToCategoryButton = new JButton("Add Article To Category");
+        allCategories = new JButton("All Categories");
 
         addCategoryButton.addActionListener(this);
         updateCategoryButton.addActionListener(this);
         deleteCategoryButton.addActionListener(this);
-        addArticleToCategoryButton.addActionListener(this);
+        allCategories.addActionListener(this);
 
         buttonPanel.add(addCategoryButton);
         buttonPanel.add(updateCategoryButton);
         buttonPanel.add(deleteCategoryButton);
-        buttonPanel.add(addArticleToCategoryButton);
+        buttonPanel.add(allCategories);
 
         add(buttonPanel, BorderLayout.NORTH);
     }
@@ -70,8 +70,8 @@ public class CategoryPanel extends JPanel implements ActionListener {
         } else if ("Delete Category".equals(command)) {
             // Handle Delete Article
             contentLayout.show(contentPanel, "DeleteCategory");
-        } else if ("Add Article To Category".equals(command)) {
-            contentLayout.show(contentPanel, "CategoryTable");
+        } else if (("All Categories ").equals(command)) {
+            contentLayout.show(contentPanel, "CategoryPanel");
             // Handle Add Article To Category
         }
     }

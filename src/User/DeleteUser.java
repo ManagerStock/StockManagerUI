@@ -10,8 +10,10 @@ import java.net.URL;
 
 public class DeleteUser extends JFrame {
     private JTextField userIdField;
+    private UserTable userTable; // Reference to the UserTable panel
 
-    public DeleteUser() {
+    public DeleteUser(UserTable userTable) {
+        this.userTable = userTable; // Set the reference to the UserTable panel
         setTitle("Delete User");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(300, 150);
@@ -56,6 +58,8 @@ public class DeleteUser extends JFrame {
                 JOptionPane.showMessageDialog(this, "User deleted successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
                 userIdField.setText(""); // Clear the text field after successful deletion
                 dispose();
+                // Refresh the user table after deletion
+                userTable.refreshTableData();
             } else {
                 JOptionPane.showMessageDialog(this, "Failed to delete user", "Error", JOptionPane.ERROR_MESSAGE);
             }

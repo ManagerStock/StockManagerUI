@@ -7,58 +7,59 @@ import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.EventListener;
 
-public class DeleteCategorie extends JPanel implements ActionListener {
-    private JTextField idField = new JTextField(20);
-    private JButton deleteButton = new JButton("Delete Category");
-    private CategoryTable categoryTable;
+public  class DeleteCategorie extends JPanel implements EventListener {
+    private JTextField categoryIdField;
 
-    public DeleteCategorie(CategoryTable categoryTable) {
-        this.categoryTable = categoryTable; // Reference to update the table if needed
-        setLayout(new GridLayout(2, 1, 10, 10)); // Simple grid layout for form
-        setBackground(new Color(245, 245, 245)); // Light grey background
+    public DeleteCategorie() {
 
-        // Adding components to the panel
-        add(new JLabel("Category ID:"));
-        add(idField);
-        add(deleteButton);
-        deleteButton.addActionListener(this);
 
-        // Styling the button
-        deleteButton.setBackground(new Color(220, 53, 69)); // Bootstrap danger color
-        deleteButton.setForeground(Color.WHITE);
-    }
+        // Create label and text field for category ID
+        JLabel categoryIdLabel = new JLabel("Category ID:");
+        categoryIdField = new JTextField(15);
 
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == deleteButton) {
-            try {
-                long categoryId = Long.parseLong(idField.getText());
-                if (sendDeleteRequest(categoryId)) {
-                    JOptionPane.showMessageDialog(this, "Category deleted successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
-                    categoryTable.refreshTableData(); // Refresh the article table to reflect deletion
-                }
-            } catch (NumberFormatException ex) {
-                JOptionPane.showMessageDialog(this, "Invalid category ID. Please enter a numeric ID.", "Error", JOptionPane.ERROR_MESSAGE);
+        // Create delete button
+        JButton deleteButton = new JButton("Delete");
+        deleteButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                deleteCategory();
             }
-        }
+        });
+
+        // Create panel and set layout
+        JPanel panel = new JPanel(new GridLayout(2, 2, 10, 10));
+        panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10)); // Add margin
+
+        // Add components to the panel
+        panel.add(categoryIdLabel);
+        panel.add(categoryIdField);
+        panel.add(new JLabel()); // Placeholder for grid alignment
+        panel.add(deleteButton);
+
+        // Add panel to the frame
+        add(panel, BorderLayout.CENTER);
     }
 
-    private boolean sendDeleteRequest(long categoryId) {
+    private void deleteCategory() {
+        String categoryId = categoryIdField.getText();
         try {
             URL url = new URL("http://localhost:2018/api/v1/category/delete/" + categoryId);
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setRequestMethod("DELETE");
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("DELETE");
 
-            int responseCode = conn.getResponseCode();
+            int responseCode = connection.getResponseCode();
             if (responseCode == HttpURLConnection.HTTP_NO_CONTENT) {
-                return true;
+                JOptionPane.showMessageDialog(this, "Category deleted successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
+                categoryIdField.setText(""); // Clear the text field after successful deletion
+
             } else {
-                JOptionPane.showMessageDialog(this, "Failed to delete category. Response code: " + responseCode, "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Failed to delete category", "Error", JOptionPane.ERROR_MESSAGE);
             }
         } catch (IOException ex) {
-            JOptionPane.showMessageDialog(this, "Error communicating with the server.", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Failed to send DELETE request", "Error", JOptionPane.ERROR_MESSAGE);
         }
-        return false;
     }
+
 }

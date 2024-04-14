@@ -1,5 +1,7 @@
 package article;
 
+import User.AddUserForm;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -9,67 +11,50 @@ public class ArticlePanel extends JPanel implements ActionListener {
     private JButton addArticleButton;
     private JButton updateArticleButton;
     private JButton deleteArticleButton;
-    private JButton addArticleToCategoryButton;
-    private JPanel contentPanel;
-    private CardLayout contentLayout;
+   
     private ArticleTable articleTable;
-    private AddArticleForm addArticleForm;
-    private DeleteArticle deleteArticle ;
+    private JPanel contentPanel ;
+    private CardLayout contentLayout;
 
     public ArticlePanel() {
-        setLayout(new BorderLayout());
-        initializeButtonPanel();
-
-        contentPanel = new JPanel();
-        contentLayout = new CardLayout();
-        contentPanel.setLayout(contentLayout);
-
-        // Pass a reference to ArticleTable into AddArticleForm for refresh
-        articleTable = new ArticleTable();
-        addArticleForm = new AddArticleForm(articleTable);
-        deleteArticle = new DeleteArticle(articleTable);
-
-        contentPanel.add(articleTable, "ArticleTable");
-        contentPanel.add(addArticleForm, "ArticleForm");
-        contentPanel.add(deleteArticle, "DeleteArticle");
-
-        add(contentPanel, BorderLayout.CENTER);
-        //contentLayout.show(contentPanel, "ArticleTable");
-    }
-
-    private void initializeButtonPanel() {
-        JPanel buttonPanel = new JPanel();
         addArticleButton = new JButton("Add Article");
         updateArticleButton = new JButton("Update Article");
         deleteArticleButton = new JButton("Delete Article");
-        addArticleToCategoryButton = new JButton("Add Article To Category");
+
 
         addArticleButton.addActionListener(this);
         updateArticleButton.addActionListener(this);
         deleteArticleButton.addActionListener(this);
-        addArticleToCategoryButton.addActionListener(this);
 
-        buttonPanel.add(addArticleButton);
-        buttonPanel.add(updateArticleButton);
-        buttonPanel.add(deleteArticleButton);
-        buttonPanel.add(addArticleToCategoryButton);
 
-        add(buttonPanel, BorderLayout.NORTH);
+        add(addArticleButton);
+        add(updateArticleButton);
+        add(deleteArticleButton);
+
+
+        // Initialize ArticleTable
+        articleTable = new ArticleTable();
+        add(articleTable); // Add the article table to the panel
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
         String command = e.getActionCommand();
-        if ("Add Article".equals(command)) {
-            contentLayout.show(contentPanel, "ArticleForm");
-        } else if ("Update Article".equals(command)) {
-            // Handle Update Article
-        } else if ("Delete Article".equals(command)) {
-            // Handle Delete Article
-            contentLayout.show(contentPanel, "DeleteArticle");
-        } else if ("Add Article To Category".equals(command)) {
-            contentLayout.show(contentPanel, "ArticleTable");
-            // Handle Add Article To Category
+        switch (command) {
+            case "Add Article":
+                // Open Add Article Form
+                AddArticleForm addArticleForm = new AddArticleForm(articleTable);
+                addArticleForm.setVisible(true);
+                break;
+            case "Update Article":
+                // Handle Update Article
+                break;
+            case "Delete Article":
+                // Open Delete Article Form
+                DeleteArticle deleteArticle = new DeleteArticle(articleTable);
+                deleteArticle.setVisible(true);
+                break;
+
         }
     }
 }

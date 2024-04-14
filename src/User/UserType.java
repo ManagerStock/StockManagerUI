@@ -69,8 +69,8 @@ private class UserTypeButtonListener implements ActionListener {
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
-            AddUserForm form = new AddUserForm();
-            form.setVisible(true);
+            //AddUserForm form = new AddUserForm();
+            //form.setVisible(true);
         });
     }
 }

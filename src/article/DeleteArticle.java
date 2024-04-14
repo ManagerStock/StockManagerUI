@@ -8,57 +8,62 @@ import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-public class DeleteArticle extends JPanel implements ActionListener {
-    private JTextField idField = new JTextField(20);
-    private JButton deleteButton = new JButton("Delete Article");
-    private ArticleTable articleTable;
+public class DeleteArticle extends JFrame {
+    private JTextField articleIdField;
+    private ArticleTable articleTable; // Reference to the ArticleTable panel
 
     public DeleteArticle(ArticleTable articleTable) {
-        this.articleTable = articleTable; // Reference to update the table if needed
-        setLayout(new GridLayout(2, 1, 10, 10)); // Simple grid layout for form
-        setBackground(new Color(245, 245, 245)); // Light grey background
+        this.articleTable = articleTable; // Set the reference to the ArticleTable panel
+        setTitle("Delete Article");
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setSize(300, 150);
+        setLocationRelativeTo(null); // Center the frame on screen
 
-        // Adding components to the panel
-        add(new JLabel("Article ID:"));
-        add(idField);
-        add(deleteButton);
-        deleteButton.addActionListener(this);
+        // Create label and text field for article ID
+        JLabel articleIdLabel = new JLabel("Article ID:");
+        articleIdField = new JTextField(15);
 
-        // Styling the button
-        deleteButton.setBackground(new Color(220, 53, 69)); // Bootstrap danger color
-        deleteButton.setForeground(Color.WHITE);
-    }
-
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == deleteButton) {
-            try {
-                long articleId = Long.parseLong(idField.getText());
-                if (sendDeleteRequest(articleId)) {
-                    JOptionPane.showMessageDialog(this, "Article deleted successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
-                    articleTable.refreshTableData(); // Refresh the article table to reflect deletion
-                }
-            } catch (NumberFormatException ex) {
-                JOptionPane.showMessageDialog(this, "Invalid article ID. Please enter a numeric ID.", "Error", JOptionPane.ERROR_MESSAGE);
+        // Create delete button
+        JButton deleteButton = new JButton("Delete");
+        deleteButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                deleteArticle();
             }
-        }
+        });
+
+        // Create panel and set layout
+        JPanel panel = new JPanel(new GridLayout(2, 2, 10, 10));
+        panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10)); // Add margin
+
+        // Add components to the panel
+        panel.add(articleIdLabel);
+        panel.add(articleIdField);
+        panel.add(new JLabel()); // Placeholder for grid alignment
+        panel.add(deleteButton);
+
+        // Add panel to the frame
+        add(panel, BorderLayout.CENTER);
     }
 
-    private boolean sendDeleteRequest(long articleId) {
+    private void deleteArticle() {
+        String articleId = articleIdField.getText();
         try {
             URL url = new URL("http://localhost:2018/api/v1/article/delete/" + articleId);
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setRequestMethod("DELETE");
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("DELETE");
 
-            int responseCode = conn.getResponseCode();
+            int responseCode = connection.getResponseCode();
             if (responseCode == HttpURLConnection.HTTP_NO_CONTENT) {
-                return true;
+                JOptionPane.showMessageDialog(this, "Article deleted successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
+                articleIdField.setText(""); // Clear the text field after successful deletion
+                articleTable.refreshTableData(); // Refresh the article table
+                dispose(); // Close the frame
             } else {
-                JOptionPane.showMessageDialog(this, "Failed to delete article. Response code: " + responseCode, "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Failed to delete article", "Error", JOptionPane.ERROR_MESSAGE);
             }
         } catch (IOException ex) {
-            JOptionPane.showMessageDialog(this, "Error communicating with the server.", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Failed to send DELETE request", "Error", JOptionPane.ERROR_MESSAGE);
         }
-        return false;
     }
 }
