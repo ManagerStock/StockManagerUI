@@ -11,7 +11,7 @@ public class ArticlePanel extends JPanel implements ActionListener {
     private JButton addArticleButton;
     private JButton updateArticleButton;
     private JButton deleteArticleButton;
-   
+
     private ArticleTable articleTable;
     private JPanel contentPanel ;
     private CardLayout contentLayout;

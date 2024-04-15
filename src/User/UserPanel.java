@@ -1,5 +1,6 @@
 package User;
 
+import Transition.AddTransitionForm;
 import pdf.PdfPanel;
 
 import javax.swing.*;
@@ -67,8 +68,7 @@ public class UserPanel extends JPanel implements ActionListener {
                 // Handle Update User button click
                 break;
             case "Delete User":
-                DeleteUser deleteUserForm = new DeleteUser(userTable);
-                deleteUserForm.setVisible(true);
+                new DeleteUser(userTable).setVisible(true);
                 break;
             case "All Users":
                 // Show the user table panel when the "All Users" button is clicked
