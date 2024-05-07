@@ -78,4 +78,5 @@ public class Menu extends JFrame implements ActionListener {
                 System.exit(0);
                 break;
         }
-    }}
+    }
+}
