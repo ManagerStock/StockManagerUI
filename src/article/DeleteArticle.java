@@ -1,3 +1,4 @@
+
 package article;
 
 import javax.swing.*;
@@ -15,7 +16,7 @@ public class DeleteArticle extends JFrame {
     public DeleteArticle(ArticleTable articleTable) {
         this.articleTable = articleTable; // Set the reference to the ArticleTable panel
         setTitle("Delete Article");
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setSize(300, 150);
         setLocationRelativeTo(null); // Center the frame on screen
 

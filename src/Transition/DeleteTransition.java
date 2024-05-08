@@ -15,7 +15,7 @@ public class DeleteTransition extends JFrame implements ActionListener {
     public DeleteTransition(TransitionTable transitionTable) {
         this.transitionTable = transitionTable; // Set the reference to the TransitionTable panel
         setTitle("Delete Transition");
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setSize(300, 150);
         setLocationRelativeTo(null); // Center the frame on screen
 
@@ -51,7 +51,8 @@ public class DeleteTransition extends JFrame implements ActionListener {
     private void deleteTransition() {
         String transitionId = transitionIdField.getText();
         try {
-            URL url = new URL("http://localhost:2018/api/v1/transition/" + transitionId); // Update the URL accordingly
+            URL url = new URL("http://localhost:2018/api/v1/transition/" + transitionId);
+
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("DELETE");
 

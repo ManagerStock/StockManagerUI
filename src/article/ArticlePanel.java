@@ -1,3 +1,4 @@
+
 package article;
 
 import javax.swing.*;
@@ -15,7 +16,7 @@ public class ArticlePanel extends JPanel implements ActionListener {
 
     public ArticlePanel() {
         addArticleButton = new JButton("Add Article");
-      //  updateArticleButton = new JButton("Update Article");
+        //  updateArticleButton = new JButton("Update Article");
         deleteArticleButton = new JButton("Delete Article");
 
         addArticleButton.addActionListener(this);
@@ -31,7 +32,7 @@ public class ArticlePanel extends JPanel implements ActionListener {
         add(addArticleButton);
         //add(updateArticleButton);
         add(deleteArticleButton);
-        add(new JLabel("Search Article by ID:"));
+        add(new JLabel("Update Article by ID:"));
         add(searchTextField);
         add(searchButton);
 

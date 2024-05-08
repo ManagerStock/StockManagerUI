@@ -19,7 +19,7 @@ public class AddUserForm extends JFrame {
     public AddUserForm(UserTable userTable) {
         this.userTable = userTable; // Set the reference to the UserTable panel
         setTitle("Add User");
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setSize(400, 300);
         setLocationRelativeTo(null); // Center the frame on screen
 

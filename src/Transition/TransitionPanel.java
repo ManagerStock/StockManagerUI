@@ -7,7 +7,7 @@ import java.awt.event.ActionListener;
 
 public class TransitionPanel extends JPanel implements ActionListener {
     private JButton addTransitionButton;
-    private JButton updateTransitionButton;
+
     private JButton deleteTransitionButton;
     private JButton allTransitionsButton; // Button for displaying all transitions
     private TransitionTable transitionTable; // Reference to the transition table panel
@@ -17,20 +17,20 @@ public class TransitionPanel extends JPanel implements ActionListener {
     public TransitionPanel() {
         // Initialize buttons
         addTransitionButton = new JButton("Add Transition");
-        updateTransitionButton = new JButton("Update Transition");
+
         deleteTransitionButton = new JButton("Delete Transition");
         allTransitionsButton = new JButton("All Transitions");
 
         // Add action listeners to buttons
         addTransitionButton.addActionListener(this);
-        updateTransitionButton.addActionListener(this);
+
         deleteTransitionButton.addActionListener(this);
         allTransitionsButton.addActionListener(this);
 
         // Add buttons to a sub-panel for better layout control
         JPanel buttonPanel = new JPanel(new GridLayout(1, 5, 10, 10));
         buttonPanel.add(addTransitionButton);
-        buttonPanel.add(updateTransitionButton);
+
         buttonPanel.add(deleteTransitionButton);
         buttonPanel.add(allTransitionsButton);
 
@@ -69,10 +69,11 @@ public class TransitionPanel extends JPanel implements ActionListener {
             case "All Transitions":
                 // Show the transition table panel when the "All Transitions" button is clicked
                 contentLayout.show(contentPanel, "TransitionTable");
+                transitionTable.refreshTableData(); // Refresh the transition table data
                 break;
-
             default:
                 break;
         }
     }
+
 }

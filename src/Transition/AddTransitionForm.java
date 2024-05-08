@@ -22,7 +22,7 @@ public class AddTransitionForm extends JFrame {
     public AddTransitionForm(TransitionTable transitionTable) {
         this.transitionTable = transitionTable; // Set the reference to the transition table
         setTitle("Add Transition");
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setSize(400, 300);
         setLocationRelativeTo(null); // Center the frame on screen
 

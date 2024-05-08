@@ -23,7 +23,7 @@ public class AddArticleForm extends JFrame implements ActionListener {
     public AddArticleForm(ArticleTable articleTable) {
         this.articleTable = articleTable;
         setTitle("Add Article");
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setSize(400, 300);
         setLocationRelativeTo(null);
 
@@ -90,7 +90,7 @@ public class AddArticleForm extends JFrame implements ActionListener {
 
     private boolean sendPostRequest(String articleJson) {
         try {
-            Long categoryId = Long.parseLong(categoryIdField.getText());
+            long categoryId = Long.parseLong(categoryIdField.getText());
             URL url = new URL("http://localhost:2018/api/v1/article/add/" + categoryId);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("POST");

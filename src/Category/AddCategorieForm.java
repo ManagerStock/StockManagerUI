@@ -17,9 +17,10 @@ public class AddCategorieForm extends JPanel implements ActionListener {
     private JTextField nameField = new JTextField(20);
     private JTextField descriptionField = new JTextField(20);
     private CategoryTable categoryTable;
-
-    public AddCategorieForm(CategoryTable categoryTable) {
+    private CategoryPanel categoryPanel;
+    public AddCategorieForm(CategoryTable categoryTable, CategoryPanel categoryPanel) {
         this.categoryTable = categoryTable;
+        this.categoryPanel = categoryPanel;
         setLayout(new GridLayout(5, 2, 10, 10));
         setBackground(new Color(245, 245, 245)); // Light grey
 
@@ -45,7 +46,7 @@ public class AddCategorieForm extends JPanel implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if ("Add Category".equals(e.getActionCommand())) {
             try {
-               Category category = new Category(
+                Category category = new Category(
                         nameField.getText(),
                         descriptionField.getText()
                 );
@@ -54,6 +55,7 @@ public class AddCategorieForm extends JPanel implements ActionListener {
                 if (sendPostRequest(categoryJson)) {
                     JOptionPane.showMessageDialog(this, "Category added successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
                     categoryTable.refreshTableData();
+                    categoryPanel.categoryAdded();
                 }
             } catch (NumberFormatException | JsonProcessingException ex) {
                 JOptionPane.showMessageDialog(this, "Error adding category. Please check your input.", "Error", JOptionPane.ERROR_MESSAGE);

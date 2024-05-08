@@ -10,7 +10,9 @@ import java.awt.event.ActionListener;
 
 public class UserPanel extends JPanel implements ActionListener {
     private JButton addUserButton;
-    private JButton deleteUserButton;// Button for displaying all users
+    private JButton updateUserButton;
+    private JButton deleteUserButton;
+    private JButton allUsersButton; // Button for displaying all users
     private JButton downloadPDF;
     private UserTable userTable; // Reference to the user table panel
     private JPanel contentPanel;
@@ -19,20 +21,24 @@ public class UserPanel extends JPanel implements ActionListener {
     public UserPanel() {
         // Initialize buttons
         addUserButton = new JButton("Add User");
+        updateUserButton = new JButton("Update User");
         deleteUserButton = new JButton("Delete User");
+        allUsersButton = new JButton("All Users");
         downloadPDF = new JButton("Download Pdf");
 
         // Add action listeners to buttons
         addUserButton.addActionListener(this);
+        updateUserButton.addActionListener(this);
         deleteUserButton.addActionListener(this);
+        allUsersButton.addActionListener(this);
         downloadPDF.addActionListener(this);
 
         // Add buttons to a sub-panel for better layout control
         JPanel buttonPanel = new JPanel(new GridLayout(1, 5, 10, 10));
         buttonPanel.add(addUserButton);
-
+        buttonPanel.add(updateUserButton);
         buttonPanel.add(deleteUserButton);
-
+        buttonPanel.add(allUsersButton);
         buttonPanel.add(downloadPDF);
 
         // Initialize the content panel and layout
@@ -70,7 +76,7 @@ public class UserPanel extends JPanel implements ActionListener {
                 break;
             case "Download Pdf" :
                 JFrame frame = new JFrame("PDF Download");
-                frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
                 frame.getContentPane().add(new PdfPanel());
                 frame.pack();
                 frame.setLocationRelativeTo(null);

@@ -33,13 +33,33 @@ public class Menu extends JFrame implements ActionListener {
     }
 
     private void showLoginPanel() {
-        JPanel loginPanel = new JPanel(new GridLayout(4, 2));
+        JPanel loginPanel = new JPanel(new BorderLayout());
+        loginPanel.setBorder(BorderFactory.createEmptyBorder(100, 200, 100, 200)); // Padding for the whole panel
+        loginPanel.setBackground(new Color(240, 240, 240)); // Set background color
 
-        JLabel usernameLabel = new JLabel("Username:");
-        JLabel passwordLabel = new JLabel("Password:");
-        usernameField = new JTextField();
-        passwordField = new JPasswordField();
+        JLabel titleLabel = new JLabel("Stock Manager Login");
+        titleLabel.setFont(new Font("Arial", Font.BOLD, 24)); // Increased title font size
+        titleLabel.setHorizontalAlignment(SwingConstants.CENTER); // Center title
+        titleLabel.setForeground(new Color(51, 102, 204)); // Set title color
+        loginPanel.add(titleLabel, BorderLayout.NORTH);
+
+        JPanel formPanel = new JPanel(new GridLayout(3, 1, 5, 5)); // 3 rows: Username, Password, Error Message
+        formPanel.setBackground(Color.WHITE); // Set background color
+        formPanel.setBorder(BorderFactory.createEmptyBorder(20, 40, 20, 40)); // Padding for the form
+
+        JTextField usernameField = new JTextField();
+        usernameField.setFont(new Font("Arial", Font.PLAIN, 18)); // Increased text field font size
+        JPasswordField passwordField = new JPasswordField();
+        passwordField.setFont(new Font("Arial", Font.PLAIN, 18)); // Increased password field font size
+        JLabel errorMessageLabel = new JLabel("");
+        errorMessageLabel.setForeground(Color.RED); // Set error message color
+
         JButton loginButton = new JButton("Login");
+        loginButton.setFont(new Font("Arial", Font.BOLD, 18)); // Increased button font size
+        loginButton.setBackground(new Color(51, 153, 51)); // Set button background color
+        loginButton.setForeground(Color.WHITE); // Set button text color
+        loginButton.setFocusPainted(false); // Remove focus border
+        loginButton.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20)); // Add padding to the button
 
         loginButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -54,22 +74,27 @@ public class Menu extends JFrame implements ActionListener {
                     getContentPane().removeAll();
                     showMenu();
                 } else {
-                    JOptionPane.showMessageDialog(Menu.this, "Invalid username or password. Please try again.");
+                    // Show error message
+                    errorMessageLabel.setText("Invalid username or password. Please try again.");
                 }
             }
         });
 
-        loginPanel.add(usernameLabel);
-        loginPanel.add(usernameField);
-        loginPanel.add(passwordLabel);
-        loginPanel.add(passwordField);
-        loginPanel.add(new JLabel()); // Empty label for alignment
-        loginPanel.add(loginButton);
+        formPanel.add(usernameField);
+        formPanel.add(passwordField);
+        formPanel.add(errorMessageLabel);
 
-        add(loginPanel);
+        loginPanel.add(formPanel, BorderLayout.CENTER);
+        loginPanel.add(loginButton, BorderLayout.SOUTH); // Add login button at the bottom
+
+        // Center the login panel
+        add(loginPanel, BorderLayout.CENTER);
         revalidate();
         repaint();
     }
+
+
+
 
     private void showMenu() {
         // Menu bar
@@ -79,14 +104,14 @@ public class Menu extends JFrame implements ActionListener {
         menu.setForeground(Color.WHITE);
 
         // Menu items
-        String[] itemLabels = {"Article", "Transition", "Category", "User", "EXIT"};
+        String[] itemLabels = {"Article", "Transition", "Category", "User", "Exit"};
         for (String label : itemLabels) {
             JMenuItem menuItem = new JMenuItem(label);
             menuItem.setBackground(new Color(108, 117, 125)); // Medium grey
             menuItem.setForeground(Color.WHITE);
             menuItem.addActionListener(this);
             menu.add(menuItem);
-            if ("DISPOSE".equals(label)) {
+            if ("Exit".equals(label)) {
                 menu.addSeparator();
             }
         }
@@ -131,9 +156,11 @@ public class Menu extends JFrame implements ActionListener {
             case "User":
                 cardLayout.show(cardPanel, "UserPanel");
                 break;
-            case "EXIT":
+            case "Exit":
                 dispose(); // Exit the application
                 break;
+
+
         }
     }
 

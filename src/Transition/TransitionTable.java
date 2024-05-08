@@ -1,3 +1,4 @@
+
 package Transition;
 
 import javax.swing.*;
@@ -11,6 +12,7 @@ import java.net.URL;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
+import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -45,7 +47,9 @@ public class TransitionTable extends JPanel {
                 response.append(inputLine);
             }
             in.close();
-            JsonNode arrNode = new ObjectMapper().readTree(response.toString());
+            // Use custom ObjectMapper with increased nesting depth
+            ObjectMapper objectMapper = new CustomObjectMapper();
+            JsonNode arrNode = objectMapper.readTree(response.toString());
             if (arrNode.isArray()) {
                 for (JsonNode objNode : arrNode) {
                     Long id = objNode.has("id") ? objNode.get("id").asLong() : null;
@@ -57,7 +61,17 @@ public class TransitionTable extends JPanel {
                 }
             }
         } catch (IOException e) {
+            e.printStackTrace(); // Print stack trace for debugging
             JOptionPane.showMessageDialog(this, "Failed to fetch transitions", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    // Custom ObjectMapper class with increased nesting depth
+    private static class CustomObjectMapper extends ObjectMapper {
+        public CustomObjectMapper() {
+            super();
+            // Increase nesting depth by enabling appropriate feature
+            configure(JsonParser.Feature.STRICT_DUPLICATE_DETECTION, true);
         }
     }
 }

@@ -7,13 +7,13 @@ import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.EventListener;
 
-public  class DeleteCategorie extends JPanel implements EventListener {
+public class DeleteCategorie extends JPanel implements ActionListener {
     private JTextField categoryIdField;
+    private CategoryPanel categoryPanel; // Reference to CategoryPanel for callback
 
-    public DeleteCategorie() {
-
+    public DeleteCategorie(CategoryPanel categoryPanel) {
+        this.categoryPanel = categoryPanel;
 
         // Create label and text field for category ID
         JLabel categoryIdLabel = new JLabel("Category ID:");
@@ -21,12 +21,7 @@ public  class DeleteCategorie extends JPanel implements EventListener {
 
         // Create delete button
         JButton deleteButton = new JButton("Delete");
-        deleteButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                deleteCategory();
-            }
-        });
+        deleteButton.addActionListener(this);
 
         // Create panel and set layout
         JPanel panel = new JPanel(new GridLayout(2, 2, 10, 10));
@@ -42,6 +37,13 @@ public  class DeleteCategorie extends JPanel implements EventListener {
         add(panel, BorderLayout.CENTER);
     }
 
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if ("Delete".equals(e.getActionCommand())) {
+            deleteCategory();
+        }
+    }
+
     private void deleteCategory() {
         String categoryId = categoryIdField.getText();
         try {
@@ -53,7 +55,7 @@ public  class DeleteCategorie extends JPanel implements EventListener {
             if (responseCode == HttpURLConnection.HTTP_NO_CONTENT) {
                 JOptionPane.showMessageDialog(this, "Category deleted successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
                 categoryIdField.setText(""); // Clear the text field after successful deletion
-
+                categoryPanel.categoryDeleted(); // Notify CategoryPanel about the deletion
             } else {
                 JOptionPane.showMessageDialog(this, "Failed to delete category", "Error", JOptionPane.ERROR_MESSAGE);
             }
@@ -61,5 +63,4 @@ public  class DeleteCategorie extends JPanel implements EventListener {
             JOptionPane.showMessageDialog(this, "Failed to send DELETE request", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
-
 }

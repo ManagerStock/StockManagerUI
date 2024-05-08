@@ -15,7 +15,7 @@ public class DeleteUser extends JFrame {
     public DeleteUser(UserTable userTable) {
         this.userTable = userTable; // Set the reference to the UserTable panel
         setTitle("Delete User");
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setSize(300, 150);
         setLocationRelativeTo(null); // Center the frame on screen
 

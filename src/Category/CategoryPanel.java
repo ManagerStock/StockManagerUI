@@ -8,13 +8,23 @@ import java.awt.event.ActionListener;
 public class CategoryPanel extends JPanel implements ActionListener {
     private JButton addCategoryButton;
     private JButton deleteCategoryButton;
-    private JButton searchCategoryButton; // New search button
-    private JTextField searchCategoryTextField; // New text field for entering category ID
+    private JButton searchCategoryButton;
+    private JTextField searchCategoryTextField;
     private JPanel contentPanel;
     private CardLayout contentLayout;
     private CategoryTable categoryTable;
     private AddCategorieForm addCategoryForm;
     private DeleteCategorie deleteCategory;
+    public void categoryAdded() {
+        // Reload the category table or update the display to reflect the addition of the new category
+        contentLayout.show(contentPanel, "CategoryTable");
+        categoryTable.refreshTableData(); // Assuming refreshTableData() method exists in CategoryTable
+    }
+    public void categoryDeleted() {
+        // Reload the category table or update the display to reflect the deletion of the category
+        contentLayout.show(contentPanel, "CategoryTable");
+        categoryTable.refreshTableData(); // Assuming refreshTableData() method exists in CategoryTable
+    }
 
     public CategoryPanel() {
         setLayout(new BorderLayout());
@@ -26,8 +36,9 @@ public class CategoryPanel extends JPanel implements ActionListener {
 
         // Pass a reference to CategoryTable into AddCategoryForm for refresh
         categoryTable = new CategoryTable();
-        addCategoryForm = new AddCategorieForm(categoryTable);
-        deleteCategory = new DeleteCategorie();
+
+        addCategoryForm = new AddCategorieForm(categoryTable,this);
+        deleteCategory = new DeleteCategorie(this);
 
         contentPanel.add(categoryTable, "CategoryTable");
         contentPanel.add(addCategoryForm, "CategoryForm");
@@ -39,22 +50,19 @@ public class CategoryPanel extends JPanel implements ActionListener {
     private void initializeButtonPanel() {
         JPanel buttonPanel = new JPanel();
         addCategoryButton = new JButton("Add Category");
-
         deleteCategoryButton = new JButton("Delete Category");
-        searchCategoryButton = new JButton("Search"); // Initialize search button
-        searchCategoryTextField = new JTextField(10); // Initialize text field
+        searchCategoryButton = new JButton("Search");
+        searchCategoryTextField = new JTextField(10);
 
         addCategoryButton.addActionListener(this);
-
         deleteCategoryButton.addActionListener(this);
-        searchCategoryButton.addActionListener(this); // Add action listener for search button
+        searchCategoryButton.addActionListener(this);
 
         buttonPanel.add(addCategoryButton);
-
         buttonPanel.add(deleteCategoryButton);
-        buttonPanel.add(new JLabel("Search Category by ID:")); // Add label for search field
-        buttonPanel.add(searchCategoryTextField); // Add search text field
-        buttonPanel.add(searchCategoryButton); // Add search button
+        buttonPanel.add(new JLabel("Search Category by ID:"));
+        buttonPanel.add(searchCategoryTextField);
+        buttonPanel.add(searchCategoryButton);
 
         add(buttonPanel, BorderLayout.NORTH);
     }
@@ -64,7 +72,7 @@ public class CategoryPanel extends JPanel implements ActionListener {
         String command = e.getActionCommand();
         if ("Add Category".equals(command)) {
             contentLayout.show(contentPanel, "CategoryForm");
-        }  else if ("Delete Category".equals(command)) {
+        } else if ("Delete Category".equals(command)) {
             contentLayout.show(contentPanel, "DeleteCategory");
         } else if ("Search".equals(command)) {
             // Retrieve category ID from the text field
@@ -79,4 +87,5 @@ public class CategoryPanel extends JPanel implements ActionListener {
                 JOptionPane.showMessageDialog(this, "Please enter a valid category ID.", "Error", JOptionPane.ERROR_MESSAGE);
             }
         }
-    }}
+    }
+}

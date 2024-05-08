@@ -1,3 +1,4 @@
+
 package article;
 
 
@@ -26,7 +27,7 @@ public class UpdateArticleForm extends JFrame implements ActionListener {
     public UpdateArticleForm(ArticleTable articleTable, long articleId) {
         this.articleTable = articleTable;
         setTitle("Update Article");
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setSize(400, 300);
         setLocationRelativeTo(null);
 
