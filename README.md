@@ -12,7 +12,8 @@ The frontend of the application is developed using Java Swing, a GUI toolkit for
 
  -Interactive Data Management: Allows users to manage stocks, suppliers, sales, and purchases seamlessly through the graphical user interface.
 
--Real-time Notifications: Provides users with timely notifications for imminent actions or important events to facilitate informed decision-making. ( Not done !!)# Tech Stack
+-Real-time Notifications: Provides users with timely notifications for imminent actions or important events to facilitate informed decision-making. ( Not done !!).
+# Tech Stack
 
 
 Java Swing: GUI toolkit used to create the desktop application interface.
